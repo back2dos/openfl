@@ -1,5 +1,7 @@
 package openfl._internal.utils;
 
+import lime.utils.Log;
+
 class ObjectPool<T:{}> {
   final construct:()->T;
   final cache:Array<T> = [];
@@ -40,9 +42,9 @@ class ObjectPool<T:{}> {
     #if debug
     switch status[o] {
       case null:
-        throw 'Object is not a member of the pool';
+        Log.error('Object is not a member of the pool');
       case false:
-        throw 'Object has already been released';
+        Log.error('Object has already been released');
       default:
     }
     #end
