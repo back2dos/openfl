@@ -4,7 +4,7 @@ class ObjectPool<T:{}> {
   final construct:()->T;
   final cache:Array<T> = [];
   #if debug
-  final status:Map<T, Bool>;
+  final status = new Map<T, Bool>();
   #end
 
   public var size(default, set):Null<Int>;
@@ -27,11 +27,11 @@ class ObjectPool<T:{}> {
   public function get()
     return switch cache.pop() {
       case null: construct();
-      case v:
+      case o:
         #if debug
         status[o] = true;
         #end
-        v;
+        o;
     }
 
   static inline var RIDICULOUSLY_LARGE = 1 << 30;
@@ -61,5 +61,6 @@ class ObjectPool<T:{}> {
       status.remove(o);
       #end
     }
+    clean(o);
   }
 }
